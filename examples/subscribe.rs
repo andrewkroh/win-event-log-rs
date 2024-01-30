@@ -56,18 +56,19 @@ fn main() {
             // while let Some(_event) = events.next() {
             //     // catch up to present
             // }
-            println!("Waiting for new events...");
             loop {
                 let mut now = Instant::now();
                 while let Some(event) = events.next() {
                     let parsed: MyEvent = event.into();
-                    println!("Parsed: {:?}", parsed);
+                    // println!("Parsed: {:?}", parsed);
 
                     let elapsed = now.elapsed();
                     println!("Elapsed: {:.2?}", elapsed);
 
                     now = Instant::now();
                 }
+
+                println!("Waiting for new events...");
                 sleep(Duration::from_millis(200));
             }
         }

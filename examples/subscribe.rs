@@ -30,6 +30,8 @@ struct MyEvent {
     pub system: Option<System>,
 }
 
+use std::time::Instant;
+
 #[cfg(feature = "xml")]
 fn main() {
     let conditions = vec![
@@ -51,14 +53,20 @@ fn main() {
     match WinEventsSubscriber::get(query) {
         Ok(mut events) => {
             println!("Ctrl+C to quit!");
-            while let Some(_event) = events.next() {
-                // catch up to present
-            }
+            // while let Some(_event) = events.next() {
+            //     // catch up to present
+            // }
             println!("Waiting for new events...");
             loop {
+                let mut now = Instant::now();
                 while let Some(event) = events.next() {
                     let parsed: MyEvent = event.into();
                     println!("Parsed: {:?}", parsed);
+
+                    let elapsed = now.elapsed();
+                    println!("Elapsed: {:.2?}", elapsed);
+
+                    now = Instant::now();
                 }
                 sleep(Duration::from_millis(200));
             }
